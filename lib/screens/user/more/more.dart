@@ -8,7 +8,6 @@ import 'package:meds/screens/account/account_settings.dart';
 import 'package:meds/screens/user/alarm/alarm_settings.dart';
 import 'package:meds/screens/user/more/bmi.dart';
 import 'package:meds/screens/user/more/emergency.dart';
-import 'package:meds/screens/user/more/set_photo_screen.dart';
 
 class More extends StatefulWidget {
   const More({super.key});
@@ -165,54 +164,6 @@ class _SettingsState extends State<More> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: FilledButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SetPhotoScreen(),
-                              ),
-                            );
-                          },
-                          style: const ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                                Color.fromARGB(255, 217, 237, 239)),
-                            foregroundColor: MaterialStatePropertyAll(
-                                Color.fromRGBO(7, 82, 96, 1)),
-                            shape: MaterialStatePropertyAll(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                            ),
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Icon(
-                                Icons.image_outlined,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Prescription Image',
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.4,

@@ -118,8 +118,8 @@ class _ChatMainState extends State<ChatMain> {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     children: snapshot.data!.docs
-                                        .map<Widget>(
-                                            (doc) => _buildDrListItem(doc, 1))
+                                        .map<Widget>((doc) =>
+                                            _buildDrListItem(doc, 1, userType))
                                         .toList(),
                                   );
                                 } else {
@@ -128,8 +128,8 @@ class _ChatMainState extends State<ChatMain> {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     children: snapshot.data!.docs
-                                        .map<Widget>(
-                                            (doc) => _buildDrListItem(doc, 0))
+                                        .map<Widget>((doc) =>
+                                            _buildDrListItem(doc, 0, userType))
                                         .toList(),
                                   );
                                 }
@@ -154,100 +154,169 @@ class _ChatMainState extends State<ChatMain> {
   }
 
   //build individual dr list
-  Widget _buildDrListItem(DocumentSnapshot doc, int userType) {
+  Widget _buildDrListItem(
+      DocumentSnapshot doc, int userType, String currentUserType) {
     Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
     final ChatService _chatService = ChatService();
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
     if (currentUser!.email != data["email"] && data["userType"] == userType) {
       return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: StreamBuilder(
-            stream: _chatService.getMessages(
-                doc.id, _firebaseAuth.currentUser!.uid),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text('Error ${snapshot.error}');
-              }
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: StreamBuilder(
+          stream:
+              _chatService.getMessages(doc.id, _firebaseAuth.currentUser!.uid),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error ${snapshot.error}');
+            }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: Text("Loading"));
-              }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: Text("Loading"));
+            }
 
-              // String lastMessage = snapshot.data!.docs.map((document) {
-              //   Map<String, dynamic> data =
-              //       document.data() as Map<String, dynamic>;
-              //   return data['message'];
-              // }).toList()[0];
+            String? lastMessage;
+            DateTime? datetime;
 
-              // Timestamp lastTimestamp = snapshot.data!.docs.map((document) {
-              //   Map<String, dynamic> data =
-              //       document.data() as Map<String, dynamic>;
-              //   return data['timestamp'];
-              // }).toList()[0];
+            if (snapshot.data!.docs
+                .map((document) {
+                  Map<String, dynamic> data =
+                      document.data() as Map<String, dynamic>;
+                  return data['message'];
+                })
+                .toList()
+                .isNotEmpty) {
+              lastMessage = snapshot.data!.docs.map((document) {
+                Map<String, dynamic> data =
+                    document.data() as Map<String, dynamic>;
+                return data['message'];
+              }).toList()[0];
 
-              // final datetime = lastTimestamp.toDate();
+              Timestamp lastTimestamp = snapshot.data!.docs.map((document) {
+                Map<String, dynamic> data =
+                    document.data() as Map<String, dynamic>;
+                return data['timestamp'];
+              }).toList()[0];
 
-              return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ChatScreen(
-                        receiverUserName: data['email'].split("@").first,
-                        receiverUserID: doc.id,
-                      ),
+              datetime = lastTimestamp.toDate();
+            }
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                      receiverUserName: data['email'].split("@").first,
+                      receiverUserID: doc.id,
                     ),
-                  );
-                },
-                child: ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  tileColor: Colors.grey[300],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
                   ),
-                  leading: (data['pic'] == null)
-                      ? CircleAvatar(
-                          radius: 25,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.surface,
-                          child: const Icon(Icons.person_outlined),
+                );
+              },
+              child: currentUserType == "1"
+                  ? lastMessage != null
+                      ? ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 10),
+                          tileColor: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          leading: (data['pic'] == null)
+                              ? CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.surface,
+                                  child: const Icon(Icons.person_outlined),
+                                )
+                              : CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: NetworkImage(data['pic']),
+                                ),
+                          title: Text(
+                            data['email'].split("@").first,
+                            style: GoogleFonts.roboto(
+                              color: const Color.fromARGB(255, 16, 15, 15),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            lastMessage,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: Text(
+                            '${datetime!.hour}:${datetime.minute}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         )
-                      : CircleAvatar(
-                          radius: 25,
-                          backgroundImage: NetworkImage(data['pic']),
+                      : const SizedBox(
+                          height: 0,
+                        )
+                  : ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 10),
+                      tileColor: Colors.grey[300],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      leading: (data['pic'] == null)
+                          ? CircleAvatar(
+                              radius: 25,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.surface,
+                              child: const Icon(Icons.person_outlined),
+                            )
+                          : CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(data['pic']),
+                            ),
+                      title: Text(
+                        data['email'].split("@").first,
+                        style: GoogleFonts.roboto(
+                          color: const Color.fromARGB(255, 16, 15, 15),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
                         ),
-                  title: Text(
-                    data['email'].split("@").first,
-                    style: GoogleFonts.roboto(
-                      color: const Color.fromARGB(255, 16, 15, 15),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      ),
+                      subtitle: lastMessage != null
+                          ? Text(
+                              lastMessage,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          : null,
+                      trailing: datetime != null
+                          ? Text(
+                              '${datetime.hour}:${datetime.minute}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            )
+                          : null,
                     ),
-                  ),
-                  // subtitle: Text(
-                  //   lastMessage,
-                  //   style: const TextStyle(
-                  //     fontSize: 16,
-                  //   ),
-                  //   maxLines: 1,
-                  //   overflow: TextOverflow.ellipsis,
-                  // ),
-                  // trailing: Text(
-                  //   '${datetime.hour}:${datetime.minute}',
-                  //   style: const TextStyle(
-                  //     fontWeight: FontWeight.bold,
-                  //     fontSize: 16,
-                  //   ),
-                  // ),
-                ),
-              );
-            },
-          ));
+            );
+          },
+        ),
+      );
     } else {
-      return const SizedBox();
+      return const SizedBox(
+        height: 0,
+      );
     }
   }
 }

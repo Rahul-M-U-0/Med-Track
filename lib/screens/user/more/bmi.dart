@@ -40,7 +40,7 @@ class _BMIState extends State<BMI> {
     double weightInKg =
         selectedWeightUnit == 'lbs' ? doubleWeight * 0.453592 : doubleWeight;
     double heightInCm =
-        selectedHeightUnit == 'ft' ? doubleHeight * 30.48 : doubleHeight * 2.54;
+        selectedHeightUnit == 'ft' ? doubleHeight * 30.48 : doubleHeight;
 
     setState(() {
       bmiValue = weightInKg / (heightInCm * heightInCm) * 10000;

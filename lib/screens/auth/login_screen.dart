@@ -82,11 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
     }
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
-    }
+    // if (mounted) {
+    setState(() {
+      isLoading = false;
+    });
+    // }
   }
 
   // for memory mgt

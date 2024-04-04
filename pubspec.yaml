@@ -58,6 +58,7 @@ dependencies:
   image_picker: ^1.0.7
   syncfusion_flutter_charts: ^25.1.37
   week_of_year: ^2.2.0
+  flutter_phone_direct_caller: ^2.1.1
 
 dev_dependencies:
   flutter_test:

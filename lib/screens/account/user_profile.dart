@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+// import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meds/components/text_field.dart';
 
@@ -21,7 +21,7 @@ class _UserProfileState extends State<UserProfile> {
 
   //controllers - keep track what types
   final _nameController = TextEditingController();
-  var _dobController = TextEditingController();
+  // var _dobController = TextEditingController();
   final _genderController = TextEditingController();
 
   final _addressController = TextEditingController();
@@ -44,7 +44,7 @@ class _UserProfileState extends State<UserProfile> {
         .set(
       {
         'name': _nameController.text,
-        'dob': _dobController.text,
+        // 'dob': _dobController.text,
         'gender': _genderController.text,
         'address': _addressController.text,
         'mobile': _mobileController.text,
@@ -80,7 +80,7 @@ class _UserProfileState extends State<UserProfile> {
     _addressController.dispose();
     _mobileController.dispose();
     _nameController.dispose();
-    _dobController.dispose();
+    // _dobController.dispose();
     _genderController.dispose();
     super.dispose();
   }
@@ -109,7 +109,7 @@ class _UserProfileState extends State<UserProfile> {
 
             //update data
             _nameController.text = userData['name'] ?? '';
-            _dobController.text = userData['dob'] ?? '';
+            // _dobController.text = userData['dob'] ?? '';
             _genderController.text = userData['gender'] ?? '';
             _addressController.text = userData['address'] ?? '';
             _mobileController.text = userData['mobile'] ?? '';
@@ -228,67 +228,67 @@ class _UserProfileState extends State<UserProfile> {
                     ),
 
                     //date of birth
-                    TextField(
-                      onTap: () async {
-                        var datePicked = await DatePicker.showSimpleDatePicker(
-                          context,
-                          titleText: 'Select your birthday',
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2099),
-                          dateFormat: "dd-MMMM-yyyy",
-                          locale: DateTimePickerLocale.en_us,
-                          looping: true,
-                        );
-                        String date =
-                            '${datePicked!.day}-${datePicked.month}-${datePicked.year}';
+                    // TextField(
+                    //   onTap: () async {
+                    //     var datePicked = await DatePicker.showSimpleDatePicker(
+                    //       context,
+                    //       titleText: 'Select your birthday',
+                    //       initialDate: DateTime.now(),
+                    //       firstDate: DateTime(1900),
+                    //       lastDate: DateTime(2099),
+                    //       dateFormat: "dd-MMMM-yyyy",
+                    //       locale: DateTimePickerLocale.en_us,
+                    //       looping: true,
+                    //     );
+                    //     String date =
+                    //         '${datePicked!.day}-${datePicked.month}-${datePicked.year}';
 
-                        setState(() {
-                          _dobController = TextEditingController(text: date);
-                        });
-                      },
-                      controller: _dobController,
-                      readOnly: true,
-                      style: GoogleFonts.roboto(
-                        height: 2,
-                        color: const Color.fromARGB(255, 16, 15, 15),
-                      ),
-                      cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                      decoration: InputDecoration(
-                        hintText: 'DD-MM-YYYY',
-                        labelText: 'Date of Birth',
-                        labelStyle: GoogleFonts.roboto(
-                          color: const Color.fromARGB(255, 16, 15, 15),
-                        ),
-                        filled: true,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        // fillColor: Colors.white,
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              20,
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 7, 82, 96),
-                          ),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              20,
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                    ),
+                    //     setState(() {
+                    //       _dobController = TextEditingController(text: date);
+                    //     });
+                    //   },
+                    //   controller: _dobController,
+                    //   readOnly: true,
+                    //   style: GoogleFonts.roboto(
+                    //     height: 2,
+                    //     color: const Color.fromARGB(255, 16, 15, 15),
+                    //   ),
+                    //   cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                    //   decoration: InputDecoration(
+                    //     hintText: 'DD-MM-YYYY',
+                    //     labelText: 'Date of Birth',
+                    //     labelStyle: GoogleFonts.roboto(
+                    //       color: const Color.fromARGB(255, 16, 15, 15),
+                    //     ),
+                    //     filled: true,
+                    //     floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    //     // fillColor: Colors.white,
+                    //     focusedBorder: const OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Color.fromARGB(255, 7, 82, 96),
+                    //       ),
+                    //     ),
+                    //     enabledBorder: const OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Colors.transparent,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
 
                     //gender
                     TextField(

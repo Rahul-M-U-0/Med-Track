@@ -47,11 +47,11 @@ class _StoreMainScreenState extends State<StoreMainScreen> {
           //home
           NavigationDestination(
             icon: Icon(
-              Icons.home_outlined,
+              Icons.shopping_bag_outlined,
             ),
-            label: "Home",
+            label: "Orders",
             selectedIcon: Icon(
-              Icons.home_rounded,
+              Icons.shopping_bag,
               color: Color.fromRGBO(7, 82, 96, 1),
             ),
           ),
@@ -60,7 +60,7 @@ class _StoreMainScreenState extends State<StoreMainScreen> {
             icon: Icon(
               Icons.medication_outlined,
             ),
-            label: "Medication",
+            label: "Stock",
             selectedIcon: Icon(
               Icons.medication,
               color: Color.fromRGBO(7, 82, 96, 1),
