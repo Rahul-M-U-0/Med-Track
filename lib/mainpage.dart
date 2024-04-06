@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
                 stream: userFirestore,
                 builder: (context, usnapshot) {
                   if (usnapshot.hasData) {
-                    String userType = usnapshot.data!["userType"].toString();
+                    String? userType = usnapshot.data!["userType"].toString();
                     // print(userType);
                     if (userType == "0") {
                       print("user");

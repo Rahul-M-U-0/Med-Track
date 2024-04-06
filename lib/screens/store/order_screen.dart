@@ -1,8 +1,9 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_unnecessary_containers
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:meds/screens/account/account_settings.dart';
 import 'package:meds/sevices/buy_service.dart';
 
@@ -15,6 +16,50 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   User? currentUser = FirebaseAuth.instance.currentUser;
+
+  String categoryImagePath(String catgoryStr) {
+    switch (catgoryStr) {
+      case 'Capsule':
+        return 'assets/icons/pills.gif';
+      case 'Tablet':
+        return 'assets/icons/tablet.gif';
+      case 'Liquid':
+        return 'assets/icons/liquid.gif';
+      case 'Topical':
+        return 'assets/icons/tube.gif';
+      case 'Cream':
+        return 'assets/icons/cream.gif';
+      case 'Drops':
+        return 'assets/icons/drops.gif';
+      case 'Foam':
+        return 'assets/icons/foam.gif';
+      case 'Gel':
+        return 'assets/icons/tube.gif';
+      case 'Herbal':
+        return 'assets/icons/herbal.gif';
+      case 'Inhaler':
+        return 'assets/icons/inhalator.gif';
+      case 'Injection':
+        return 'assets/icons/syringe.gif';
+      case 'Lotion':
+        return 'assets/icons/lotion.gif';
+      case 'Nasal Spray':
+        return 'assets/icons/nasalspray.gif';
+      case 'Ointment':
+        return 'assets/icons/tube.gif';
+      case 'Patch':
+        return 'assets/icons/patch.gif';
+      case 'Powder':
+        return 'assets/icons/powder.gif';
+      case 'Spray':
+        return 'assets/icons/spray.gif';
+      case 'Suppository':
+        return 'assets/icons/suppository.gif';
+      default:
+        return 'assets/icons/medicine.gif';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +141,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         return const Text("Error");
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const LinearProgressIndicator();
+                        return const SizedBox();
                       }
 
                       return StreamBuilder(
@@ -110,9 +155,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   .toList(),
                             );
                           } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return const SizedBox();
                           }
                         },
                       );
@@ -139,20 +182,147 @@ class _OrdersScreenState extends State<OrdersScreen> {
             return Text('Error ${snapshot.error}');
           }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: Text("Loading"));
+          if (snapshot.hasData) {
+            return Column(
+              children: snapshot.data!.docs
+                  .map<Widget>((document) => _buildOrderItem(document))
+                  .toList(),
+            );
+          } else {
+            return const SizedBox(
+              height: 0,
+            );
           }
-          return Column(
-            children: snapshot.data!.docs
-                .map<Widget>((document) => _buildOrderItem(document))
-                .toList(),
-          );
         },
       ),
     );
   }
 
+  getDate(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+
+    // Format DateTime to just the date
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDate;
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getOrderData(
+      String userId, String otherUserId, String orderId) {
+    // construct chat room id from the user ids
+    List<String> ids = [userId, otherUserId];
+    ids.sort();
+    String ordersId = ids.join("_");
+    return FirebaseFirestore.instance
+        .collection('orders')
+        .doc(ordersId)
+        .collection('order')
+        .doc(orderId)
+        .snapshots();
+  }
+
+  updateStatus(String userId, String otherUserId, String orderId) async {
+    List<String> ids = [userId, otherUserId];
+    ids.sort();
+    String ordersId = ids.join("_");
+
+    await FirebaseFirestore.instance
+        .collection('orders')
+        .doc(ordersId)
+        .collection('order')
+        .doc(orderId)
+        .update({
+      'delivered': true,
+      'timestamp': Timestamp.now(),
+    });
+  }
+
   _buildOrderItem(QueryDocumentSnapshot<Object?> document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    return StreamBuilder(
+      stream: getOrderData(
+          data['buyerId'], FirebaseAuth.instance.currentUser!.uid, document.id),
+      builder: (context, osnapshot) {
+        return StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('Users')
+              .doc(data['buyerId'])
+              .snapshots(),
+          builder: (context, usnapshot) {
+            return Container(
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection('Medicines')
+                    .doc(data['productId'])
+                    .snapshots(),
+                builder: (context, psnapshot) {
+                  if (psnapshot.connectionState == ConnectionState.waiting) {
+                    return const LinearProgressIndicator();
+                  } else {
+                    return Card(
+                      child: ListTile(
+                        title: Text(
+                          psnapshot.data!['medname'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        leading: Image.asset(
+                          categoryImagePath(psnapshot.data!['category']),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              usnapshot.data!['name'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              usnapshot.data!['address'],
+                            ),
+                            Text(
+                              'Ordered On ${getDate(osnapshot.data!['timestamp'])}',
+                            ),
+                            Text(
+                              '${osnapshot.data!['totalPrice']} Rs',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        trailing: Column(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                updateStatus(
+                                  data['buyerId'],
+                                  FirebaseAuth.instance.currentUser!.uid,
+                                  document.id,
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 35,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

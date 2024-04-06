@@ -22,6 +22,7 @@ class MedicineBuyScreen extends StatefulWidget {
 
 class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
   int number = 0;
+  double totalPrice = 0;
   final MedicineBuyService _buyService = MedicineBuyService();
 
   String categoryImagePath(String catgoryStr) {
@@ -125,7 +126,7 @@ class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -166,6 +167,11 @@ class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
                       setState(() {
                         if (number > 0) {
                           number--;
+                          if (number == 0) {
+                            totalPrice = 0;
+                          } else {
+                            totalPrice = widget.data['price'] * number;
+                          }
                         }
                       });
                     },
@@ -181,6 +187,11 @@ class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
                       setState(() {
                         if (number < widget.data['total_med']) {
                           number++;
+                          if (number == 0) {
+                            totalPrice = 0;
+                          } else {
+                            totalPrice = widget.data['price'] * number;
+                          }
                         }
                       });
                     },
@@ -193,13 +204,34 @@ class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
                 ],
               ),
               const SizedBox(
-                height: 150,
+                height: 20,
+              ),
+              Row(
+                children: [
+                  const Text(
+                    "Total Price :",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  Text(
+                    totalPrice.toString(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
               ),
               InkWell(
                 onTap: () async {
                   if (number > 0) {
                     await _buyService.buyMedicine(
-                        widget.storeId, widget.productId);
+                        widget.storeId, widget.productId, totalPrice);
                     int count = widget.data['total_med'] - number;
                     print(count);
                     await FirebaseFirestore.instance

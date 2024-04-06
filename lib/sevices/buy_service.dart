@@ -9,19 +9,20 @@ class MedicineBuyService extends ChangeNotifier {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   //send message
-  Future<void> buyMedicine(String shopId, String productId) async {
+  Future<void> buyMedicine(
+      String shopId, String productId, double totalPrice) async {
     // get current user info
     final String currentUserId = _firebaseAuth.currentUser!.uid;
     final Timestamp timestamp = Timestamp.now();
 
     //create a new order
     Medicine newmedicine = Medicine(
-      buyerId: currentUserId,
-      shopId: shopId,
-      productId: productId,
-      timestamp: timestamp,
-      delivered: false,
-    );
+        buyerId: currentUserId,
+        shopId: shopId,
+        productId: productId,
+        timestamp: timestamp,
+        delivered: false,
+        totalPrice: totalPrice);
 
     //construct chat room id
     List<String> ids = [currentUserId, shopId];
@@ -36,9 +37,9 @@ class MedicineBuyService extends ChangeNotifier {
         .add(newmedicine.toMap());
   }
 
-  //get message
+  //get order
   Stream<QuerySnapshot> getorder(String userId, String otherUserId) {
-    // construct chat room id from the user ids
+    // construct  room id from the user ids
     List<String> ids = [userId, otherUserId];
     ids.sort();
     String orderId = ids.join("_");
@@ -46,8 +47,19 @@ class MedicineBuyService extends ChangeNotifier {
         .collection('orders')
         .doc(orderId)
         .collection('order')
-        .orderBy('timestamp', descending: false)
         .where('delivered', isEqualTo: false)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getUserOrder(String userId, String otherUserId) {
+    // construct room id from the user ids
+    List<String> ids = [userId, otherUserId];
+    ids.sort();
+    String orderId = ids.join("_");
+    return _firebaseFirestore
+        .collection('orders')
+        .doc(orderId)
+        .collection('order')
         .snapshots();
   }
 }

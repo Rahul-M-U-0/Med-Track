@@ -6,6 +6,7 @@ class Medicine {
   final String productId;
   final Timestamp timestamp;
   final bool delivered;
+  final double totalPrice;
 
   Medicine({
     required this.buyerId,
@@ -13,6 +14,7 @@ class Medicine {
     required this.productId,
     required this.timestamp,
     required this.delivered,
+    required this.totalPrice,
   });
 
   //convert to map
@@ -23,6 +25,7 @@ class Medicine {
       'productId': productId,
       'timestamp': timestamp,
       'delivered': delivered,
+      'totalPrice': totalPrice,
     };
   }
 }
