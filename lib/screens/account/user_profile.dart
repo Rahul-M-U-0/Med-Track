@@ -109,7 +109,6 @@ class _UserProfileState extends State<UserProfile> {
 
             //update data
             _nameController.text = userData['name'] ?? '';
-            // _dobController.text = userData['dob'] ?? '';
             _genderController.text = userData['gender'] ?? '';
             _addressController.text = userData['address'] ?? '';
             _mobileController.text = userData['mobile'] ?? '';

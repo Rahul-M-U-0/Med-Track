@@ -13,6 +13,7 @@ import 'package:meds/screens/user/alarm/alarm_ring.dart';
 import 'package:meds/screens/chat/chat_main.dart';
 import 'package:meds/screens/user/medication.dart';
 import 'package:meds/screens/user/more/more.dart';
+import 'package:meds/screens/user/store/view_store_screen.dart';
 import 'package:meds/screens/user/user_home_screen.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -68,7 +69,7 @@ class _UserDashboardState extends State<UserDashboard> {
       //medication
       const Mediaction(),
       //statistic
-      const Text("Store"),
+      const ViewStoreScreen(),
       //chat
       const ChatMain(),
       //settings

@@ -13,6 +13,7 @@ class MedicationControllerData {
       TextEditingController();
   TextEditingController medicationDosageController = TextEditingController();
   TextEditingController medicationCountController = TextEditingController();
+  TextEditingController medicationPriceController = TextEditingController();
   TextEditingController medicationNoteController = TextEditingController();
   TextEditingController medicationTimeOfDayController = TextEditingController();
   TextEditingController medicationTimesController = TextEditingController();
@@ -32,6 +33,8 @@ class MedicationControllerData {
   // Singleton pattern for accessing the instance
   static final MedicationControllerData _instance =
       MedicationControllerData._internal();
+
+  void clear() {}
 
   factory MedicationControllerData() {
     return _instance;

@@ -2,8 +2,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:meds/screens/store/orders_screen.dart';
-import 'package:meds/screens/store/store_home_screen.dart';
+import 'package:meds/screens/store/stock_screen.dart';
+import 'package:meds/screens/store/order_screen.dart';
 
 class StoreMainScreen extends StatefulWidget {
   const StoreMainScreen({super.key});
@@ -23,9 +23,9 @@ class _StoreMainScreenState extends State<StoreMainScreen> {
     //pages
     final List<Widget> pages = <Widget>[
       //main page
-      const StoreHomeScreen(),
-      //medication
       const OrdersScreen(),
+      //medication
+      const StockScreen(),
     ];
 
     //scaffold
