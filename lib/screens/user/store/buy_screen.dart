@@ -220,7 +220,7 @@ class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
                     width: 40,
                   ),
                   Text(
-                    totalPrice.toString(),
+                    totalPrice.toStringAsFixed(2),
                     style: const TextStyle(fontSize: 18),
                   ),
                 ],
@@ -267,7 +267,9 @@ class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
                         );
                       } else if (number > 0) {
                         await _buyService.buyMedicine(
-                            widget.storeId, widget.productId, totalPrice);
+                            widget.storeId,
+                            widget.productId,
+                            double.parse(totalPrice.toStringAsFixed(2)));
                         int count = widget.data['total_med'] - number;
                         print(count);
                         await FirebaseFirestore.instance

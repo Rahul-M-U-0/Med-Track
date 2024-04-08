@@ -37,7 +37,7 @@ class HelpCenter extends StatelessWidget {
                 ),
               ),
               Text(
-                'The app is designed to help users manage their medications effectively by providing features such as medication reminders, prescription management, and health-related tools like a BMI calculator.',
+                'The app is designed to help users manage their medications effectively by providing features such as medication reminders, and health-related tools like a BMI calculator.',
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -88,7 +88,7 @@ class HelpCenter extends StatelessWidget {
                 ),
               ),
               Text(
-                'The app provides customizable medication reminders, prescription management with photo uploads, medication history tracking, and a comprehensive medication database.',
+                'The app provides customizable medication reminders, medication history tracking, and a comprehensive medication database.',
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -109,21 +109,7 @@ class HelpCenter extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'Q6: Can I upload photos of my prescriptions to the app?',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'Yes, the app allows users to securely upload photos of their prescriptions for easy management and retrieval.',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Q7: Is there a BMI calculator feature, and how does it work?',
+                'Q6: Is there a BMI calculator feature, and how does it work?',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -137,7 +123,7 @@ class HelpCenter extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'Q8: How does the app locate nearby hospitals and pharmacies?',
+                'Q7: How does the app locate nearby hospitals and pharmacies?',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -156,20 +142,6 @@ class HelpCenter extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.teal,
-                ),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Q9: How is user data, especially prescription photos, secured?',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'User data, including prescription photos, is encrypted to ensure privacy and security. The app adheres to data protection regulations to safeguard user information.',
-                style: TextStyle(
-                  fontSize: 16,
                 ),
               ),
               SizedBox(height: 16),
@@ -370,6 +342,7 @@ class HelpCenter extends StatelessWidget {
     );
   }
 }
+
 
 /*
 General Information:

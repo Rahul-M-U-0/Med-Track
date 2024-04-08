@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meds/screens/auth/email_verify.dart';
 import 'package:meds/screens/auth/login_or_register.dart';
+import 'package:meds/screens/auth/pending_screen.dart';
 import 'package:meds/screens/doctor/doctor_mainscreen.dart';
 import 'package:meds/screens/store/store_mainscreen.dart';
 import 'package:meds/screens/user/user_dashboard.dart';
@@ -39,13 +40,16 @@ class _MainPageState extends State<MainPage> {
                   if (usnapshot.hasData) {
                     String? userType = usnapshot.data!["userType"].toString();
                     // print(userType);
-                    if (userType == "0") {
-                      print("user");
-                      return const UserDashboard();
-                    } else if (userType == "1") {
-                      return const DoctorMainScreen();
+                    if (usnapshot.data!['approved']) {
+                      if (userType == "0") {
+                        return const UserDashboard();
+                      } else if (userType == "1") {
+                        return const DoctorMainScreen();
+                      } else {
+                        return const StoreMainScreen();
+                      }
                     } else {
-                      return const StoreMainScreen();
+                      return const PendingScreen();
                     }
                   } else {
                     return const Center(

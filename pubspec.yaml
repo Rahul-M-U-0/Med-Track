@@ -60,6 +60,7 @@ dependencies:
   week_of_year: ^2.2.0
   flutter_phone_direct_caller: ^2.1.1
   intl: ^0.19.0
+  lottie: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +90,7 @@ flutter:
     - assets/audio/
     - assets/icons/
     - assets/images/
+    - assets/animations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

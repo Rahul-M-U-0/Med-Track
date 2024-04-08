@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_field, prefer_final_fields
+// ignore_for_file: non_constant_identifier_names, unused_field, prefer_final_fields, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -161,8 +161,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'pic': null,
                   'address': null,
                   'mobile': null,
+                  'approved': selectedRoleIndex != 0 ? false : true,
                 },
               );
+              if (selectedRoleIndex != 0) {
+                FirebaseFirestore.instance
+                    .collection("admin_request_database")
+                    .add({
+                  "name": nameController.text.trim(),
+                  "email": emailController.text.trim(),
+                  "Id": value.user!.uid,
+                  "approved": false,
+                });
+              }
             });
 
             //account created successfully
