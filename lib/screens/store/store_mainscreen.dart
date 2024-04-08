@@ -22,10 +22,10 @@ class _StoreMainScreenState extends State<StoreMainScreen> {
   Widget build(BuildContext context) {
     //pages
     final List<Widget> pages = <Widget>[
-      //main page
-      const OrdersScreen(),
       //medication
       const StockScreen(),
+      //order page
+      const OrdersScreen(),
     ];
 
     //scaffold
@@ -44,17 +44,6 @@ class _StoreMainScreenState extends State<StoreMainScreen> {
       bottomNavigationBar: NavigationBar(
         backgroundColor: const Color.fromARGB(255, 242, 253, 255),
         destinations: const [
-          //home
-          NavigationDestination(
-            icon: Icon(
-              Icons.shopping_bag_outlined,
-            ),
-            label: "Orders",
-            selectedIcon: Icon(
-              Icons.shopping_bag,
-              color: Color.fromRGBO(7, 82, 96, 1),
-            ),
-          ),
           //medications
           NavigationDestination(
             icon: Icon(
@@ -63,6 +52,17 @@ class _StoreMainScreenState extends State<StoreMainScreen> {
             label: "Stock",
             selectedIcon: Icon(
               Icons.medication,
+              color: Color.fromRGBO(7, 82, 96, 1),
+            ),
+          ),
+          //order
+          NavigationDestination(
+            icon: Icon(
+              Icons.shopping_bag_outlined,
+            ),
+            label: "Orders",
+            selectedIcon: Icon(
+              Icons.shopping_bag,
               color: Color.fromRGBO(7, 82, 96, 1),
             ),
           ),

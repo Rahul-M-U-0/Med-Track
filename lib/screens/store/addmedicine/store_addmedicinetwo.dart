@@ -99,6 +99,7 @@ class _StoreAddMedicines2State extends State<StoreAddMedicines2> {
         ),
       );
       _showSnackBar('Medication added successfully');
+      MedicationControllerData().clear();
     } on FirebaseException catch (e) {
       Navigator.of(context).pop();
       _showSnackBar('${e.message}');

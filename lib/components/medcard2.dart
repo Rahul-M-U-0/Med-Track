@@ -110,6 +110,7 @@ class MedCard2 extends StatelessWidget {
                                 .collection('Medications')
                                 .doc(medID)
                                 .delete();
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor:

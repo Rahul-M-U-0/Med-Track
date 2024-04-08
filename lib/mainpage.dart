@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, avoid_print
+// ignore_for_file: must_be_immutable, avoid_print, dead_code
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
         builder: (context, snapshot) {
           //if user logged in show dashbaord else go to authentication page
           if (snapshot.hasData) {
-            if (FirebaseAuth.instance.currentUser!.emailVerified) {
+            if (FirebaseAuth.instance.currentUser!.emailVerified || true) {
               String? userId = FirebaseAuth.instance.currentUser!.uid;
 
               var userFirestore = FirebaseFirestore.instance

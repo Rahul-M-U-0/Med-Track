@@ -34,7 +34,27 @@ class MedicationControllerData {
   static final MedicationControllerData _instance =
       MedicationControllerData._internal();
 
-  void clear() {}
+  void clear() {
+    medicationNameController.clear();
+    medicationTypeController.clear();
+    medicationStrengthValueController.clear();
+    medicationStrengthController.clear();
+    medicationPhotoController.clear();
+    medicationDosageValueController.clear();
+    medicationDosageController.clear();
+    medicationCountController = TextEditingController();
+    medicationPriceController.clear();
+    medicationNoteController.clear();
+    medicationTimeOfDayController.clear();
+    medicationTimesController.clear();
+    medicationTimes12HController.clear();
+    medicationNumberOfTimesController.clear();
+    medicationStartingDateController.clear();
+    medicationEndingDateController.clear();
+    medicationFrequencyController.clear();
+    medicationFrequency_isSpecificDays_Controller.clear();
+    medicationFrequency_weekday_Controller.clear();
+  }
 
   factory MedicationControllerData() {
     return _instance;

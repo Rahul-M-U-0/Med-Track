@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meds/sevices/buy_service.dart';
 
@@ -225,47 +226,84 @@ class _MedicineBuyScreenState extends State<MedicineBuyScreen> {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 70,
               ),
-              InkWell(
-                onTap: () async {
-                  if (number > 0) {
-                    await _buyService.buyMedicine(
-                        widget.storeId, widget.productId, totalPrice);
-                    int count = widget.data['total_med'] - number;
-                    print(count);
-                    await FirebaseFirestore.instance
-                        .collection('Users')
-                        .doc(widget.storeId)
-                        .collection('Medicines')
-                        .doc(widget.productId)
-                        .update({
-                      'total_med': count,
-                    });
-                    Navigator.pop(context);
-                    _showSnackBar("Order received succesfully..");
-                  } else {
-                    _showSnackBar("Quantity must be greaterthan 0");
-                  }
-                },
-                child: Container(
-                  height: 60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(7, 82, 96, 1),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Buy",
-                      style: TextStyle(
-                          fontSize: 21,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  return InkWell(
+                    onTap: () async {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        const CircularProgressIndicator();
+                      }
+                      final userData =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                      if (userData['address'] == null ||
+                          userData['address'] == "") {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: const Text(
+                                "Provide address in the profile",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Ok"),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      } else if (number > 0) {
+                        await _buyService.buyMedicine(
+                            widget.storeId, widget.productId, totalPrice);
+                        int count = widget.data['total_med'] - number;
+                        print(count);
+                        await FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(widget.storeId)
+                            .collection('Medicines')
+                            .doc(widget.productId)
+                            .update({
+                          'total_med': count,
+                        });
+                        Navigator.pop(context);
+                        _showSnackBar("Order received succesfully..");
+                      } else {
+                        _showSnackBar("Quantity must be greaterthan 0");
+                      }
+                    },
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(7, 82, 96, 1),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Buy",
+                          style: TextStyle(
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              )
+                  );
+                },
+              ),
             ],
           ),
         ),

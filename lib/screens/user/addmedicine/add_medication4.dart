@@ -435,6 +435,7 @@ class _AddMedication4State extends State<AddMedication4> {
         ),
       );
       _showSnackBar('Medication added successfully');
+      MedicationControllerData().clear();
     } on FirebaseException catch (e) {
       // print('ERROR: ${e.code}');
       //pop loading cicle

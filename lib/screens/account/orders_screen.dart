@@ -211,7 +211,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              ssnapshot.data!['name'],
+                              "${ssnapshot.data!['name']} Stores",
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,

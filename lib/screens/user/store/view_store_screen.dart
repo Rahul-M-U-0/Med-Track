@@ -98,7 +98,7 @@ class _ViewStoreScreenState extends State<ViewStoreScreen> {
                               ConnectionState.waiting) {
                             return const LinearProgressIndicator();
                           }
-                          if (snapshot.hasData) {
+                          if (snapshot.data!.docs.isNotEmpty) {
                             return ListView(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -108,12 +108,25 @@ class _ViewStoreScreenState extends State<ViewStoreScreen> {
                             );
                           } else {
                             return Center(
-                              child: Image.asset(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.20,
-                                'assets/images/medication.gif',
-                                color: const Color.fromARGB(255, 241, 250, 251),
-                                colorBlendMode: BlendMode.darken,
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.20,
+                                    'assets/images/medication.gif',
+                                    color: const Color.fromARGB(
+                                        255, 241, 250, 251),
+                                    colorBlendMode: BlendMode.darken,
+                                  ),
+                                  Text(
+                                    "No Store Currently Available",
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           }

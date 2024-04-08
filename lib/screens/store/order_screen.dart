@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:meds/screens/account/account_settings.dart';
 import 'package:meds/sevices/buy_service.dart';
@@ -58,6 +59,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
       default:
         return 'assets/icons/medicine.gif';
     }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: const Color.fromARGB(255, 7, 83, 96),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   @override
@@ -116,6 +127,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ],
                 ),
               ],
+            ),
+          ),
+          Text(
+            "Current Orders",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
             ),
           ),
 
@@ -234,6 +253,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       'delivered': true,
       'timestamp': Timestamp.now(),
     });
+    _showSnackBar("Product delivered.");
   }
 
   _buildOrderItem(QueryDocumentSnapshot<Object?> document) {
