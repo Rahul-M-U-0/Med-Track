@@ -300,13 +300,15 @@ class _ChatMainState extends State<ChatMain> {
                       trailing: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "${data['fromTime']} - ${data['toTime']}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
+                          data['fomeTime'] != null && data['toTime'] != null
+                              ? Text(
+                                  "${data['fromTime']} - ${data['toTime']}",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                )
+                              : const Text(""),
                         ],
                       ),
                     ),

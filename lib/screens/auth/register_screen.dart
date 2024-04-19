@@ -377,7 +377,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (selectedRoleIndex == 1)
                       Text_Field(
                         label: 'Department',
-                        hint: 'EMT',
+                        hint: 'ENT',
                         isPassword: false,
                         keyboard: TextInputType.text,
                         txtEditController: departmentController,
