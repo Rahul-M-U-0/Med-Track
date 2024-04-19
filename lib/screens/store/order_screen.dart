@@ -308,6 +308,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             Text(
                               'Ordered On ${getDate(osnapshot.data!['timestamp'])}',
                             ),
+                            const Text(
+                              'Cash On Delivery',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             Text(
                               '${osnapshot.data!['totalPrice']} Rs',
                               style: const TextStyle(

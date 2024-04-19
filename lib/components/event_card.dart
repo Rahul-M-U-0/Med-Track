@@ -358,7 +358,7 @@ class EventCard extends StatelessWidget {
                       medName,
                       textAlign: TextAlign.start,
                       style: GoogleFonts.roboto(
-                        fontSize: 23,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
                         fontWeight: FontWeight.w600,
                         color: !isTaken
                             ? Theme.of(context).colorScheme.surface

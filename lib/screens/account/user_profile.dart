@@ -23,7 +23,8 @@ class _UserProfileState extends State<UserProfile> {
   final _nameController = TextEditingController();
   // var _dobController = TextEditingController();
   final _genderController = TextEditingController();
-
+  var _fromTimeController = TextEditingController();
+  var _toTimeController = TextEditingController();
   final _addressController = TextEditingController();
   final _mobileController = TextEditingController();
   String? _docId = "";
@@ -41,10 +42,12 @@ class _UserProfileState extends State<UserProfile> {
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUser!.uid)
-        .set(
+        .update(
       {
         'name': _nameController.text,
         // 'dob': _dobController.text,
+        'toTime': _toTimeController.text,
+        'fromTime': _fromTimeController.text,
         'gender': _genderController.text,
         'address': _addressController.text,
         'mobile': _mobileController.text,
@@ -112,6 +115,8 @@ class _UserProfileState extends State<UserProfile> {
             _genderController.text = userData['gender'] ?? '';
             _addressController.text = userData['address'] ?? '';
             _mobileController.text = userData['mobile'] ?? '';
+            // _toTimeController.text = userData['toTime'] ?? '';
+            // _fromTimeController.text = userData['fromTime'] ?? '';
             _email = userData['email'];
             _docId = userData['doctorId'];
             _storeId = userData['storeId'];
@@ -175,6 +180,15 @@ class _UserProfileState extends State<UserProfile> {
                           color: const Color.fromARGB(255, 16, 15, 15),
                         ),
                       ),
+                    if (_docId != "")
+                      Text(
+                        'Department: ${userData['department']}',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.roboto(
+                          fontSize: 15,
+                          color: const Color.fromARGB(255, 16, 15, 15),
+                        ),
+                      ),
 
                     if (_storeId != "")
                       const SizedBox(
@@ -225,69 +239,6 @@ class _UserProfileState extends State<UserProfile> {
                     const SizedBox(
                       height: 15,
                     ),
-
-                    //date of birth
-                    // TextField(
-                    //   onTap: () async {
-                    //     var datePicked = await DatePicker.showSimpleDatePicker(
-                    //       context,
-                    //       titleText: 'Select your birthday',
-                    //       initialDate: DateTime.now(),
-                    //       firstDate: DateTime(1900),
-                    //       lastDate: DateTime(2099),
-                    //       dateFormat: "dd-MMMM-yyyy",
-                    //       locale: DateTimePickerLocale.en_us,
-                    //       looping: true,
-                    //     );
-                    //     String date =
-                    //         '${datePicked!.day}-${datePicked.month}-${datePicked.year}';
-
-                    //     setState(() {
-                    //       _dobController = TextEditingController(text: date);
-                    //     });
-                    //   },
-                    //   controller: _dobController,
-                    //   readOnly: true,
-                    //   style: GoogleFonts.roboto(
-                    //     height: 2,
-                    //     color: const Color.fromARGB(255, 16, 15, 15),
-                    //   ),
-                    //   cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                    //   decoration: InputDecoration(
-                    //     hintText: 'DD-MM-YYYY',
-                    //     labelText: 'Date of Birth',
-                    //     labelStyle: GoogleFonts.roboto(
-                    //       color: const Color.fromARGB(255, 16, 15, 15),
-                    //     ),
-                    //     filled: true,
-                    //     floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    //     // fillColor: Colors.white,
-                    //     focusedBorder: const OutlineInputBorder(
-                    //       borderRadius: BorderRadius.all(
-                    //         Radius.circular(
-                    //           20,
-                    //         ),
-                    //       ),
-                    //       borderSide: BorderSide(
-                    //         color: Color.fromARGB(255, 7, 82, 96),
-                    //       ),
-                    //     ),
-                    //     enabledBorder: const OutlineInputBorder(
-                    //       borderRadius: BorderRadius.all(
-                    //         Radius.circular(
-                    //           20,
-                    //         ),
-                    //       ),
-                    //       borderSide: BorderSide(
-                    //         color: Colors.transparent,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-
-                    // const SizedBox(
-                    //   height: 15,
-                    // ),
 
                     //gender
                     TextField(
@@ -437,8 +388,148 @@ class _UserProfileState extends State<UserProfile> {
                       focusNode: FocusNode(),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
+
+                    if (_docId != "")
+                      Row(
+                        children: [
+                          Text(
+                            'Available Time',
+                            style: GoogleFonts.roboto(
+                              fontSize: 15,
+                              color: const Color.fromARGB(255, 16, 15, 15),
+                            ),
+                          ),
+                        ],
+                      ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    //available date
+                    if (_docId != "")
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              onTap: () async {
+                                var fromTimePicked = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now(),
+                                );
+                                String date =
+                                    '${fromTimePicked!.hour}:${fromTimePicked.minute}';
+
+                                setState(() {
+                                  _fromTimeController =
+                                      TextEditingController(text: date);
+                                });
+                              },
+                              controller: _fromTimeController,
+                              readOnly: true,
+                              style: GoogleFonts.roboto(
+                                height: 2,
+                                color: const Color.fromARGB(255, 16, 15, 15),
+                              ),
+                              cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                              decoration: InputDecoration(
+                                labelText: 'From',
+                                labelStyle: GoogleFonts.roboto(
+                                  color: const Color.fromARGB(255, 16, 15, 15),
+                                ),
+                                filled: true,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                // fillColor: Colors.white,
+                                focusedBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      20,
+                                    ),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 7, 82, 96),
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      20,
+                                    ),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: TextField(
+                              onTap: () async {
+                                var toTimePicked = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now(),
+                                  cancelText: "",
+                                  barrierDismissible: false,
+                                );
+                                String date =
+                                    '${toTimePicked!.hour}:${toTimePicked.minute}';
+
+                                setState(() {
+                                  _toTimeController =
+                                      TextEditingController(text: date);
+                                });
+                              },
+                              controller: _toTimeController,
+                              readOnly: true,
+                              style: GoogleFonts.roboto(
+                                height: 2,
+                                color: const Color.fromARGB(255, 16, 15, 15),
+                              ),
+                              cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                              decoration: InputDecoration(
+                                labelText: 'To',
+                                labelStyle: GoogleFonts.roboto(
+                                  color: const Color.fromARGB(255, 16, 15, 15),
+                                ),
+                                filled: true,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                // fillColor: Colors.white,
+                                focusedBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      20,
+                                    ),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 7, 82, 96),
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      20,
+                                    ),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                    const SizedBox(
+                      height: 15,
+                    ),
+
                     //save button
                     SizedBox(
                       width: double.infinity,

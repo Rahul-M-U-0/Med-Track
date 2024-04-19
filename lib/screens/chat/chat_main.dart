@@ -289,25 +289,26 @@ class _ChatMainState extends State<ChatMain> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      subtitle: lastMessage != null
-                          ? Text(
-                              lastMessage,
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          : null,
-                      trailing: datetime != null
-                          ? Text(
-                              '${datetime.hour}:${datetime.minute}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            )
-                          : null,
+                      subtitle: Text(
+                        "Dep: ${data['department']}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "${data['fromTime']} - ${data['toTime']}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
             );
           },

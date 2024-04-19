@@ -25,7 +25,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final cnfPasswordController = TextEditingController();
   final certificateIdController = TextEditingController();
   final storeIdController = TextEditingController();
+  final departmentController = TextEditingController();
 
+  late FocusNode focusNode_department;
   late FocusNode focusNode_email;
   late FocusNode focusNode_pwd;
   late FocusNode focusNode_pwdConfirm;
@@ -39,6 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPwdConfirm = false;
   bool _isCirtId = false;
   bool _isStoreId = false;
+  bool _isDep = false;
 
   bool isLoading = false;
   bool isLoadingGoogle = false;
@@ -67,6 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     focusNode_name = FocusNode();
     focusNode_certId = FocusNode();
     focusNode_stoerId = FocusNode();
+    focusNode_department = FocusNode();
     super.initState();
   }
 
@@ -84,6 +88,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       focusNode_name.requestFocus();
     } else if (certificateIdController.text.isEmpty && selectedRoleIndex == 1) {
       focusNode_certId.requestFocus();
+    } else if (departmentController.text.isEmpty && selectedRoleIndex == 1) {
+      focusNode_department.requestFocus();
     } else if (storeIdController.text.isEmpty && selectedRoleIndex == 2) {
       focusNode_stoerId.requestFocus();
     } else if (emailController.text.isEmpty) {
@@ -155,10 +161,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'email': emailController.text,
                   'userType': selectedRoleIndex,
                   'doctorId': certificateIdController.text,
+                  'toTime': null,
+                  'fromTime': null,
+                  'department': departmentController.text,
                   'storeId': storeIdController.text,
-                  'dob': null,
                   'gender': null,
-                  'pic': null,
                   'address': null,
                   'mobile': null,
                   'approved': selectedRoleIndex != 0 ? false : true,
@@ -343,6 +350,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (selectedRoleIndex == 1)
                       Visibility(
                         visible: _isCirtId,
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                            child: Text(
+                              'Enter a valid name',
+                              style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                color: const Color.fromRGBO(255, 16, 15, 15),
+                              ),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (selectedRoleIndex == 1)
+                      const SizedBox(
+                        height: 5,
+                      ),
+
+                    //department
+                    if (selectedRoleIndex == 1)
+                      Text_Field(
+                        label: 'Department',
+                        hint: 'EMT',
+                        isPassword: false,
+                        keyboard: TextInputType.text,
+                        txtEditController: departmentController,
+                        focusNode: focusNode_department,
+                      ),
+                    if (selectedRoleIndex == 1)
+                      const SizedBox(
+                        height: 2,
+                      ),
+
+                    //text not a valid Id
+                    if (selectedRoleIndex == 1)
+                      Visibility(
+                        visible: _isDep,
                         maintainSize: true,
                         maintainAnimation: true,
                         maintainState: true,
